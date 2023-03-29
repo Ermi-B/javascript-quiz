@@ -65,12 +65,14 @@ h1{
 }
 
 .question{
-    display: flex;
+    
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
     
 }
+
+
 .timer{
     display: flex;
     flex-wrap: wrap;
