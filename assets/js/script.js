@@ -5,6 +5,7 @@ var radioContainer = document.querySelector(".radio-container");
 has_gameEnded = false;
 currentIndex = 0;
 var numCorrectAnswers = 0;
+var nameInitial;
 quiz = [
     {
         question: "Which of the following keywords is used to define a variable in Javascript?",
@@ -51,7 +52,7 @@ quiz = [
 
 
 var btnEl = document.createElement("button"); //submit button making it global to be able to create event listener for itself
-var count = 3; //timer start point in seconds
+var count = 1; //timer start point in seconds
 var h2El = document.createElement('h2');
 h2El.textContent = "Timer : " + count;
 h2El.setAttribute("style","padding-left:100px; font-family: cursive; font-size:200%;")
@@ -109,17 +110,48 @@ function displayScore(){
 
 }
 function saveScore(){
-    //delaying the prompt because its priortizing the propmpt over displayScore()
-    var delayedPrompt = setTimeout(function(){ 
-        var input = prompt("Enter your initals to save your score");
-        console.log(input);
-    },2000);
+    //initial input element
+    var input = document.createElement("input");
+    input.id = "initials";
+    input.setAttribute("style","border-radius:10px; border-color: var(--theme); height:25px; margin:10px;text-align:center;")
+   
+    //initial input label
+    var labelEl = document.createElement("label");    
+    labelEl.setAttribute("for","initials");    
+    labelEl.style.margin = "10px";
+    labelEl.textContent = "Enter your initials: ";
 
+    //save score button
+    var saveBtn = document.createElement("button");
+    saveBtn.setAttribute("style","width:100px; margin:3%; background-color:var(--theme);font-size: 110%;color: white;box-shadow: 2px 5px 3px gray;border-radius:20px;margin: 3%;padding: 1%;height: 8%;text-align: center;")
+    saveBtn.textContent = "Save";
+    //appending score saving form elements
+    questionCard.appendChild(labelEl);
+    questionCard.appendChild(input);
+    questionCard.appendChild(saveBtn);
     
+    saveBtn.addEventListener("click",function(){
+        nameInitial = input.value;
+        console.log(nameInitial);
+        generateList();
+    })
 
    
 }
+function generateList(){
+    
+        questionCard.textContent = ""
+        radioContainer.textContent = ""
+        var scoreListCard = document.createElement("ol");   
+        var scoreListEl = document.createElement("li");
+        scoreListEl.textContent = nameInitial +" ----------- "+numCorrectAnswers;
 
+   
+
+
+    scoreListCard.appendChild(scoreListEl);
+    questionCard.appendChild(scoreListCard);
+}
 
 //click start event listener
 start.addEventListener("click",function(){
@@ -137,6 +169,7 @@ start.addEventListener("click",function(){
                 h2El.textContent = "Time's up!";
                 displayScore();
                 saveScore();
+                
                 
             }
             has_gameEnded = true;
