@@ -77,9 +77,13 @@ h1{
     flex-flow: column wrap;
     justify-content: center;
     align-items: center;
+    text-align: center;
     
 }
-
+.italic{
+    font-style: italic;
+    font-weight: normal;
+}
 
 .timer{
     display: flex;

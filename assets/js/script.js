@@ -51,7 +51,7 @@ quiz = [
 
 
 var btnEl = document.createElement("button"); //submit button making it global to be able to create event listener for itself
-var count = 30; //timer start point in seconds
+var count = 3; //timer start point in seconds
 var h2El = document.createElement('h2');
 h2El.textContent = "Timer : " + count;
 h2El.setAttribute("style","padding-left:100px; font-family: cursive; font-size:200%;")
@@ -103,26 +103,42 @@ function displayQuestions(i){
 }
 function displayScore(){
     questionCard.textContent = "";
-    questionCard.textContent = "Correct Answers: "+ numCorrectAnswers;
+    radioContainer.textContent = "";
+    questionCard.textContent = "Correct Answers: "+ numCorrectAnswers+" out of "+quiz.length + " ("+Math.floor(numCorrectAnswers*100/quiz.length)+"%)";
+    
 
 }
 function saveScore(){
-    var input = prompt("Enter your initals to save your score");
-    console.log(input);
+    //delaying the prompt because its priortizing the propmpt over displayScore()
+    var delayedPrompt = setTimeout(function(){ 
+        var input = prompt("Enter your initals to save your score");
+        console.log(input);
+    },2000);
+
+    
+
+   
 }
 
 
 //click start event listener
 start.addEventListener("click",function(){
     //Timer  
-
+    radioContainer.textContent = "";
+    questionCard.textContent = "";
+    
     var countDown = setInterval(function(){
-        if(count>0){
+        if(count>0 && has_gameEnded==false){
         count--;
         h2El.textContent = "Timer : " + count;
         }else{
             clearInterval(countDown);
-            h2El.textContent = "Time's up!";
+            if(count == 0){
+                h2El.textContent = "Time's up!";
+                displayScore();
+                saveScore();
+                
+            }
             has_gameEnded = true;
         }
     },1000);
@@ -158,6 +174,7 @@ btnEl.addEventListener('click',function(){
         displayQuestions(currentIndex);
     if(currentIndex == quiz.length){
         saveScore();
+        has_gameEnded = true;
     }
         
        
