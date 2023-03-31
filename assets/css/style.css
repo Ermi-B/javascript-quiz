@@ -5,6 +5,10 @@
 *{
     padding:0;
     margin: 0;
+    font-family: sans-serif;
+}
+h1{
+    color:#fff;
 }
 body{
     background-color: rgb(255, 255, 255);
@@ -23,6 +27,9 @@ h1{
     flex-flow: row wrap;
     justify-content: space-around;
     background-color: var(--background-color);
+    font-weight: bold;
+    padding: 1%;
+    font-size: 120%;
     
 }
 .buttonsRow{
@@ -37,10 +44,11 @@ h1{
 }
 
 .buttonsRow button{
-    font-size: 120%;
+    font-size: 250%;
     margin: 1%;
-    padding: 20px;
+    padding: 20px;   
     border-radius: 50%;
+    
 
 }
 .buttonsRow #start{
@@ -76,8 +84,7 @@ h1{
 .timer{
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
+    padding-right: 60px;
     
 
 }
@@ -87,3 +94,4 @@ footer{
     background-color: var(--theme);
     height: 8vh;
 }
+
