@@ -4,14 +4,19 @@ var resetScores = document.getElementById("reset-scores")
 var timer = document.querySelector(".timer");
 var questionCard = document.querySelector(".question");
 var radioContainer = document.querySelector(".radio-container");
-has_gameEnded = false;
+
+//booleans to track the start and end of quiz
+var has_gameEnded = false;
 var has_quizStarted = false;
+
 currentIndex = 0; //index that points to each question
 var numCorrectAnswers = 0;
-var nameInitials = []; 
+
+var nameInitials = []; //score initials that user enters after quiz
 var scores = []
 var initial;
-//Array of objects containing each question with its multiple option as array value and index to the correct answer
+
+//Array of objects containing each question, its multiple option as array value and index to the correct answer
 quiz = [
     {
         question: "Which of the following keywords is used to define a variable in Javascript?",
@@ -48,6 +53,41 @@ quiz = [
         options: ["toValue()","ToNumber()","toString()","None of the above"],
         correctAnswerIndex: 2 // index of the correct answer in options
     },
+    {
+        question:"What is the correct way to declare a JavaScript variable?",
+        options: ["variable = 5;","var 5 = variable;","var variable = 5;","variable == 5;"],
+        correctAnswerIndex:2
+    },
+    {
+        question:"What is the correct way to write a JavaScript array?",
+        options: ["[1, 2, 3, 4, 5]","(1, 2, 3, 4, 5)","{1, 2, 3, 4, 5}","1, 2, 3, 4, 5"],
+        correctAnswerIndex:0
+    },
+    {
+        question:"What is the correct way to write a JavaScript function?",
+        options: ["function myFunction() { // code here }","var myFunction = function() { // code here }","Both A and B are correct","None"],
+        correctAnswerIndex:2
+    },
+    {
+        question:"What is the correct way to write a JavaScript for loop?",
+        options: ["for (i < 5; i++) { // code here }","for (i = 0; i < 5; i++) { // code here }","for (i < 5) { // code here }","for (i = 5; i > 0; i--) { // code here }"],
+        correctAnswerIndex:1
+    },
+    {
+        question:"What is the purpose of the console.log() function in JavaScript?",
+        options: ["To provide a list of instructions to be executed by the browser.","To style the HTML elements on a web page.","To perform a specific task or calculation.","To display information in the browser's console for debugging purposes."],
+        correctAnswerIndex:3
+    },
+    {
+        question:"What is a Boolean in JavaScript?",
+        options: ["A data type used to store true/false values.","A function that takes input and returns output.","An HTML tag used to display images."," A programming construct used to store data."],
+        correctAnswerIndex:0
+    },
+    {
+        question:"What is a string in JavaScript?",
+        options: ["A data type used to store text.","A function that takes input and returns output.","An array of numbers.","A programming construct used to loop through code."],
+        correctAnswerIndex:3
+    },
     
     
     //add more questions here
@@ -56,7 +96,7 @@ quiz = [
 
 
         var btnEl = document.createElement("button"); //submit button
-        var count = 30; //timer start point in seconds
+        var count = 40; //timer start point in seconds
         var h2El = document.createElement('h2');
         h2El.setAttribute("style","padding-left:100px; font-family: cursive; font-size:200%;")
         timer.setAttribute("style","height:fit-content; width:fit-content; ")
@@ -82,7 +122,7 @@ function displayQuestions(i){
         var brEl = document.createElement("br"); //break line
         radioContainer.appendChild(brEl);
 
-        var choice = document.createElement("input");//radio buttons
+        var choice = document.createElement("input");//radio buttons 
         choice.type = 'radio';
         choice.value = option;
         choice.name = 'choice';
@@ -101,9 +141,12 @@ function displayQuestions(i){
 
         });
     }else{      
-        
+        if(currentIndex == quiz.length){
+            has_gameEnded = true;
+        }
         displayScore(); //end of array or timer reached 0  it displays score and end quiz
         saveScore();
+        
         
         
     }   
@@ -117,10 +160,13 @@ function displayScore(){
 
 }
 
+var saveBtn = document.createElement("button");
+var input = document.createElement("input");
+
 //saves current score into local storage 
 function saveScore(){
     // name initial input element when saving score
-    var input = document.createElement("input");
+   
     input.id = "initials";
     input.required = true;
     input.setAttribute("style","border-radius:10px; border-color: var(--theme); height:25px; margin:10px;text-align:center;")
@@ -132,7 +178,7 @@ function saveScore(){
     labelEl.textContent = "Enter your initials: ";
 
     //save score button
-    var saveBtn = document.createElement("button");
+    
     saveBtn.setAttribute("style","width:100px; margin:3%; background-color:var(--theme);font-size: 110%;color: white;box-shadow: 2px 5px 3px gray;border-radius:20px;margin: 3%;padding: 1%;height: 8%;text-align: center;")
     saveBtn.textContent = "Save";
 
@@ -140,9 +186,9 @@ function saveScore(){
     questionCard.appendChild(labelEl);
     questionCard.appendChild(input);
     questionCard.appendChild(saveBtn);
-    
-    //event listener for save score button
-    saveBtn.addEventListener("click",function(){
+  }  
+//event listener for save score button
+saveBtn.addEventListener("click",function(){
     initial = input.value;                   
     scores.push(numCorrectAnswers);
     nameInitials.push(initial);
@@ -151,9 +197,9 @@ function saveScore(){
     localStorage.setItem(initial,numCorrectAnswers);        
     generateList();
         
-    })
+})
    
-}
+
 
 //renders a list geenerated freom local storage (initial name and score)
 function generateList(){    
@@ -176,52 +222,57 @@ function generateList(){
 }
 
 //click start event listener
-start.addEventListener("click",function(){
-    
-    
-    
-    if(has_quizStarted){
-         var startOverChoice = confirm("Are you sure you want to start over?");
-        if(startOverChoice == true){
-            startQuiz();
-        }
+start.addEventListener("click",function(){   
+    //checks if user really wanted to start over in the middle of the quiz
+    if(!has_quizStarted && !has_gameEnded){
+        console.log("has quiz started",has_quizStarted)
+        console.log("quiz has ended ",has_gameEnded)
+       startQuiz();
+       has_quizStarted = true;
+       console.log(" After pressin gon staret has quiz started",has_quizStarted)
+            console.log("quiz has ended ",has_gameEnded)
+      
        
     }else{
-       startQuiz();
-
+        var startOverChoice = confirm("Are you sure you want to start over?");
+        if(startOverChoice == true){    //if user clicked on OK quiz starts over, otherwise nothing happens
+            console.log("quiz restarted")
+            has_gameEnded = true;
+            console.log("has quiz started",has_quizStarted)
+            console.log("quiz has ended ",has_gameEnded)
+            startQuiz();
+        }
     }
- 
 
 });
 
+//function that starts the timer and displays other questions after one question is answered
 function startQuiz(){
    //Timer starts countdown as sonn as start is clicked
    currentIndex=0;
-   count=30;
+   count=40;
    radioContainer.textContent = "";
    questionCard.textContent = "";
-   h2El.textContent = "Timer : " + count;
-   
-   has_quizStarted = true;
-   has_gameEnded=false;
-
+   h2El.textContent = "Timer : " + count; 
+ 
    //timer functionality
    var countDown = setInterval(function(){
-       if(currentIndex == quiz.length){
-           has_gameEnded = true;
-       }
+    
+      
 
-       if(count>0 && has_gameEnded==false){
+       if(count>0){
        count--; //count decreases every second        
        h2El.textContent = "Timer : " + count; //countdown displayed
        }else if(count == 0){          
                
                clearInterval(countDown);
-               h2El.textContent = "Time's up!";           
-   
+               h2El.textContent = "Time's up!";             
        }
        
    },1000);
+   if(has_gameEnded){
+    clearInterval(countDown); //making sure that timer stops when user restarted the game
+   }
    displayQuestions(currentIndex); //displays next qquestion at currentindex
 }
  //Reset Scores event listener
@@ -244,7 +295,7 @@ btnEl.addEventListener('click',function(){
         
     
     }else{
-        count-=5; //when incorrect timer decreases by 5 seconds
+        count-=3; //when incorrect timer decreases by 3 seconds
     }
     if(currentIndex == quiz.length || count==0){ //end ofd array reached and quiz is complete
         saveScore();
