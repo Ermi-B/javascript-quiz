@@ -1,6 +1,6 @@
 :root{
     --theme : rgb(74, 78, 215);
-    --background-color : rgb(207, 208, 219);
+    --background-color : rgb(206, 208, 225);
 }
 *{
     padding:0;
@@ -55,7 +55,7 @@ h1{
     background-color: rgb(13, 176, 13);
     color: rgb(255, 255, 255);
 }
-.buttonsRow #score{
+.buttonsRow #reset-scores{
     background-color: rgb(118, 118, 15);
     color: rgb(255, 255, 255);
 }
