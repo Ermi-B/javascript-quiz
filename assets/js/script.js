@@ -5,6 +5,7 @@ var timer = document.querySelector(".timer");
 var questionCard = document.querySelector(".question");
 var radioContainer = document.querySelector(".radio-container");
 has_gameEnded = false;
+var has_quizStarted = false;
 currentIndex = 0; //index that points to each question
 var numCorrectAnswers = 0;
 var nameInitials = []; 
@@ -176,35 +177,54 @@ function generateList(){
 
 //click start event listener
 start.addEventListener("click",function(){
-    //Timer starts countdown as sonn as start is clicked
-    currentIndex=0;
-    count=30;
-    radioContainer.textContent = "";
-    questionCard.textContent = "";
-    h2El.textContent = "Timer : " + count;
     
-    has_gameEnded=false;
-
-    //timer functionality
-    var countDown = setInterval(function(){
-        if(currentIndex == quiz.length){
-            has_gameEnded = true;
-        }
-
-        if(count>0 && has_gameEnded==false){
-        count--; //count decreases every second        
-        h2El.textContent = "Timer : " + count; //countdown displayed
-        }else if(count == 0){          
-                clearInterval(countDown);
-                
-                h2El.textContent = "Time's up!";           
     
+    
+    if(has_quizStarted){
+         var startOverChoice = confirm("Are you sure you want to start over?");
+        if(startOverChoice == true){
+            startQuiz();
         }
-    },1000);
-    displayQuestions(currentIndex); //displays next qquestion at currentindex
+       
+    }else{
+       startQuiz();
+
+    }
+ 
 
 });
 
+function startQuiz(){
+   //Timer starts countdown as sonn as start is clicked
+   currentIndex=0;
+   count=30;
+   radioContainer.textContent = "";
+   questionCard.textContent = "";
+   h2El.textContent = "Timer : " + count;
+   
+   has_quizStarted = true;
+   has_gameEnded=false;
+
+   //timer functionality
+   var countDown = setInterval(function(){
+       if(currentIndex == quiz.length){
+           has_gameEnded = true;
+       }
+
+       if(count>0 && has_gameEnded==false){
+       count--; //count decreases every second        
+       h2El.textContent = "Timer : " + count; //countdown displayed
+       }else if(count == 0){          
+               
+               clearInterval(countDown);
+               h2El.textContent = "Time's up!";           
+   
+       }
+       
+   },1000);
+   displayQuestions(currentIndex); //displays next qquestion at currentindex
+}
+ //Reset Scores event listener
 resetScores.addEventListener("click",function(){
         localStorage.clear(); //clears the entire local storage
         generateList(); //shows a list whoch is empty hence scores are reset
@@ -241,7 +261,7 @@ btnEl.addEventListener('click',function(){
     }
 });
  
- //Reset Scores event listener
+
 
 
     
