@@ -96,7 +96,7 @@ quiz = [
 
 
         var btnEl = document.createElement("button"); //submit button
-        var count = 40; //timer start point in seconds
+        var count = 60; //timer start point in seconds
         var h2El = document.createElement('h2');
         h2El.setAttribute("style","padding-left:100px; font-family: cursive; font-size:200%;")
         timer.setAttribute("style","height:fit-content; width:fit-content; ")
@@ -140,16 +140,7 @@ function displayQuestions(i){
         questionCard.appendChild(btnEl);
 
         });
-    }else{      
-        if(currentIndex == quiz.length){
-            has_gameEnded = true;
-        }
-        displayScore(); //end of array or timer reached 0  it displays score and end quiz
-        saveScore();
-        
-        
-        
-    }   
+    }
 }
 //displaying result(score)
 function displayScore(){
@@ -231,6 +222,7 @@ start.addEventListener("click",function(){
        has_quizStarted = true;
        console.log(" After pressin gon staret has quiz started",has_quizStarted)
             console.log("quiz has ended ",has_gameEnded)
+            
       
        
     }else{
@@ -241,19 +233,35 @@ start.addEventListener("click",function(){
             console.log("has quiz started",has_quizStarted)
             console.log("quiz has ended ",has_gameEnded)
             startQuiz();
+            
         }
     }
+    if(currentIndex == quiz.length-1){
+        console.log("end of quiz reached array")
+        has_gameEnded = true;
+        has_quizStarted = false;
+        h2El.textContent = "Quiz complete!"; 
+        displayScore(); //end of array or timer reached 0  it displays score and end quiz
+        saveScore();
+    
+    }  
+      
+       
+        
+        
+        
+      
 
 });
 
 //function that starts the timer and displays other questions after one question is answered
 function startQuiz(){
    //Timer starts countdown as sonn as start is clicked
-   currentIndex=0;
-   count=40;
+   
+   
    radioContainer.textContent = "";
    questionCard.textContent = "";
-   h2El.textContent = "Timer : " + count; 
+   
  
    //timer functionality
    var countDown = setInterval(function(){
@@ -263,16 +271,34 @@ function startQuiz(){
        if(count>0){
        count--; //count decreases every second        
        h2El.textContent = "Timer : " + count; //countdown displayed
-       }else if(count == 0){          
+       }else if(count == 0){         
                
                clearInterval(countDown);
-               h2El.textContent = "Time's up!";             
+               h2El.textContent = "Time's up!"; 
+               displayScore();
+               saveScore();
+               count = 60 ;  //resetting valiue back for next iteration            
+
        }
+
+       if(currentIndex == quiz.length-1){
+        clearInterval(countDown); //stops the setInterval when array length reached or last question reached
+        has_gameEnded = true;
+        has_quizStarted = false;
+        h2El.textContent = "Quiz complete!"; 
+        displayScore(); //end of array or timer reached 0  it displays score
+        saveScore();
+        
+    }  
        
    },1000);
-   if(has_gameEnded){
-    clearInterval(countDown); //making sure that timer stops when user restarted the game
-   }
+   
+   
+    if(has_gameEnded && has_quizStarted){
+    
+     clearInterval(countDown);
+     count = 60; //making sure that timer stops and restarts when user restarted the game
+    }
    displayQuestions(currentIndex); //displays next qquestion at currentindex
 }
  //Reset Scores event listener
@@ -294,19 +320,18 @@ btnEl.addEventListener('click',function(){
         numCorrectAnswers+=1;
         
     
-    }else{
-        count-=3; //when incorrect timer decreases by 3 seconds
     }
-    if(currentIndex == quiz.length || count==0){ //end ofd array reached and quiz is complete
-        saveScore();
-        
-    }
+  
         questionCard.innerHTML = ""; //clears space for the next question
         radioContainer.innerHTML = "";
         
         currentIndex++; //index now points to next question
         displayQuestions(currentIndex);
-
+        console.log(currentIndex)
+        console.log(quiz.length)
+        
+        //end ofd array reached and quiz is complete           
+        
     
   
     }
@@ -315,5 +340,4 @@ btnEl.addEventListener('click',function(){
 
 
 
-    
     
