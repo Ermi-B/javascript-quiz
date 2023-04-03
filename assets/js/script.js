@@ -68,7 +68,7 @@ quiz = [
         question: "What is the correct way to write a JavaScript function?",
         options: ["function myFunction() { // code here }", "var myFunction = function() { // code here }", "Both A and B are correct", "None"],
         correctAnswerIndex: 2
-    },
+    }
 
 
 
@@ -128,7 +128,7 @@ function displayQuestions(i) {
 function displayScore() {
     questionCard.textContent = "";
     radioContainer.textContent = "";
-    questionCard.textContent = "Correct Answers: " + numCorrectAnswers + " out of " + quiz.length + " (" + Math.floor(numCorrectAnswers * 100 / quiz.length) + "%)"; // displays result also in percentage
+    questionCard.textContent = "Correct Answers: " + numCorrectAnswers + " out of " + quiz.length + " (" + Math.floor(numCorrectAnswers / quiz.length)*100 + "%)"; // displays result also in percentage
 
 
 }
@@ -203,20 +203,14 @@ start.addEventListener("click", function () {
     } else {
         var startOverChoice = confirm("Are you sure you want to start over?");
         if (startOverChoice == true) {    //if user clicked on OK quiz starts over, otherwise nothing happens
-            has_gameEnded = true;
-            correctWrong.textContent = ""
+            numCorrectAnswers = 0;  //resetting to 0
             count = 45;
+            has_gameEnded = true;
+            correctWrong.textContent = ""            
             startQuiz();
         }
     }
-    if (currentIndex == quiz.length - 1) {
-        has_gameEnded = true;
-        has_quizStarted = false;
-        h2El.textContent = "Quiz complete!";
-        displayScore(); //end of array or timer reached 0  it displays score and end quiz
-        saveScore();
-
-    }
+    
 
 
 
@@ -253,7 +247,7 @@ function startQuiz() {
 
         }
 
-        if (currentIndex == quiz.length - 1) {
+        if (currentIndex == quiz.length) {
             clearInterval(countDown); //stops the setInterval when array length reached or last question reached
             has_gameEnded = true;
             has_quizStarted = false;
@@ -294,7 +288,7 @@ btnEl.addEventListener('click', function () {
             numCorrectAnswers += 1;
             correctWrong.textContent = "Correct!"
             correctWrong.style.color = 'Green';
-            console.log("correct")
+            
 
         }
         else {
@@ -308,8 +302,7 @@ btnEl.addEventListener('click', function () {
 
         currentIndex++; //index now points to next question
         displayQuestions(currentIndex);
-        console.log(currentIndex)
-        console.log(quiz.length)
+
 
         //end ofd array reached and quiz is complete           
 
