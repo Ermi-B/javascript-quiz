@@ -4,7 +4,7 @@
 - A timed Quiz on JavaScript fundamentals that stores high scores.
 ## Usage
  - Click on the following link to open the Javascript Quiz wepage
-    https://ermi-b.github.io/quiz-web-app/
+    https://ermi-b.github.io/javascript-quiz/
     
  - Click the start button and timer of 45 seconds starts and a question will be displayed with choices.
  - When you answer one question, click on submit and another question will follow.
