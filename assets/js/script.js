@@ -209,14 +209,7 @@ start.addEventListener("click", function () {
             correctWrong.textContent = ""            
             startQuiz();
         }
-    }
-    
-
-
-
-
-
-
+    }    
 
 });
 
