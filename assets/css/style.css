@@ -92,6 +92,10 @@ h1{
     
 
 }
+.correct-wrong{
+    display: flex;
+    justify-content: center;
+}
 
 footer{
     
